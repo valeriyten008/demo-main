@@ -3,7 +3,8 @@ package com.example.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "config")
+@SpringBootApplication(scanBasePackages = {"config"})
+
 public class SpringBootSecurityDemoApplication {
 
     public static void main(String[] args) {

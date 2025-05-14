@@ -1,5 +1,6 @@
 package service;
 
+import model.Role;
 import model.User;
 
 import java.util.List;
@@ -11,5 +12,6 @@ public interface UserService {
     Optional<User> findById(Long id);
     void updateUser(Long id, User updatedUser);
     void deleteById(Long id);
-    User findByUsername(String username);
+    User findByEmail(String email);
+    List<Role> getAllRoles();
 }
