@@ -8,11 +8,12 @@
 
 <h2>Edit User</h2>
 
-<form th:method="PATCH"
+<form th:method="post"
       th:action="@{/user/{id}/edit(id=${user.id})}"
       th:object="${user}">
 
-  <!-- Только отображение ID -->
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
   <label for="id">User ID:</label>
   <input type="text" th:field="*{id}" id="id" readonly/>
   <br/>
@@ -38,9 +39,11 @@
   <br/>
 
   <label for="roles">Roles:</label>
-  <select id="roles" name="roles" required>
-    <option value="ADMIN">ADMIN</option>
-    <option value="USER">USER</option>
+  <select id="roles" th:field="*{roles}" multiple required>
+    <option th:each="role : ${allRoles}"
+            th:value="${role.id}"
+            th:text="${role.name}">
+    </option>
   </select>
   <br/>
 

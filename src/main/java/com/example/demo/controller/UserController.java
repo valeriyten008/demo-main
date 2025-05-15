@@ -37,6 +37,13 @@ public class UserController {
         return "user/user-list";
     }
 
+    @GetMapping("/user-profile")
+    public String getUserProfile(Model model) {
+        List<User> users = userService.findAll();
+        model.addAttribute("user", users);
+        return "user/user-profile";
+    }
+
     @GetMapping("/{id}")
     public String findUserById(@PathVariable("id") Long id, Model model) {
         Optional<User> user = userService.findById(id);
@@ -77,13 +84,15 @@ public class UserController {
 
         if (userById.isPresent()) {
             model.addAttribute("user", userById.get());
+            model.addAttribute("allRoles", roleService.findAll()); // 🔸 это обязательно
             return "user/user-edit";
         } else {
             return "redirect:/user";
         }
     }
 
-    @PatchMapping("/{id}/edit")
+
+    @PostMapping("/{id}/edit")
     public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.updateUser(id, user);
         return "redirect:/user";

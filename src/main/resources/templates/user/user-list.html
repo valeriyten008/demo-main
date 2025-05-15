@@ -30,9 +30,7 @@
         <td th:text="${user.roles}"></td>
         <td>
             <a th:href="@{/user/{id}/edit(id=${user.id})}">Edit</a> |
-            <form th:method="DELETE" th:action="@{/user/{id}(id=${user.id})}" style="display:inline;">
-                <input type="submit" value="Delete"/>
-            </form>
+            <a th:href="@{/user/{id}/delete(id=${user.id})}">Delete</a>
         </td>
     </tr>
     </tbody>

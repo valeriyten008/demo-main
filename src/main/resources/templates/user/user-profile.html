@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <title>All Users</title>
 </head>
 <body>
 
-<h1>User Profile</h1>
+<h2>All Users</h2>
 
-<div>
-    <p><strong>Username:</strong> <span th:text="${user.username}">Username</span></p>
-    <p><strong>ID:</strong> <span th:text="${user.id}">1</span></p>
-
-    <p><strong>Roles:</strong></p>
-    <ul>
-        <li th:each="role : ${roles}" th:text="${role.name}">ROLE_USER</li>
-    </ul>
-</div>
-
-<!-- Logout form -->
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.roles}"></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
