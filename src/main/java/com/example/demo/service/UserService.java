@@ -1,7 +1,7 @@
-package service;
+package com.example.demo.service;
 
-import model.Role;
-import model.User;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,14 +1,15 @@
-package controller;
+package com.example.demo.controller;
 
 
+import com.example.demo.service.RoleService;
 import jakarta.validation.Valid;
-import model.User;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import com.example.demo.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,10 +21,14 @@ public class UserController {
 
     private final UserService userService;
 
+    private final RoleService roleService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
+
 
     @GetMapping
     public String getAllUsers(Model model) {
@@ -34,16 +39,23 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String findUserById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        return "user-find";
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()) {
+            model.addAttribute("user", user.get());
+            return "user/user-find";
+        } else {
+            return "redirect:/user";
+        }
     }
+
 
     @GetMapping("/create")
     public String createUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("allRoles", userService.getAllRoles());
+        model.addAttribute("allRoles", roleService.findAll());
         return "user/user-create";
     }
+
 
 
     @PostMapping
@@ -51,7 +63,7 @@ public class UserController {
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("allRoles", userService.getAllRoles());
+            model.addAttribute("allRoles", roleService.findAll());
             return "user/user-create";
         }
 
@@ -65,7 +77,7 @@ public class UserController {
 
         if (userById.isPresent()) {
             model.addAttribute("user", userById.get());
-            return "user-edit";
+            return "user/user-edit";
         } else {
             return "redirect:/user";
         }
@@ -77,11 +89,11 @@ public class UserController {
         return "redirect:/user";
     }
     @GetMapping("/{id}/delete")
-    public String confirmDelete(@PathVariable("id") Long id, Model model) {
+    public String deleteUserForm(@PathVariable("id") Long id, Model model) {
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
-            return "delete-user";
+            return "user/user-delete";
         } else {
             return "redirect:/user";
         }
@@ -90,7 +102,8 @@ public class UserController {
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
-        return "redirect:/users";
+        return "redirect:/user";
+
     }
     @GetMapping("/profile")
     public String userProfile(Model model, Principal principal) {

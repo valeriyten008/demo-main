@@ -1,13 +1,12 @@
-package service;
+package com.example.demo.service;
 
 import jakarta.transaction.Transactional;
-import model.Role;
-import model.User;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import repository.RoleRepository;
-import repository.UserRepository;
+import com.example.demo.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,21 +16,27 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @Override
     public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+        return roleService.findAll();
     }
 
     @Override
     public void save(User user) {
+        List<Role> roles = user.getRoles().stream()
+                .map(role -> roleService.findById(role.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+        user.setRoles(roles);
         userRepository.save(user);
     }
 

@@ -1,4 +1,4 @@
-package config;
+package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +26,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index").permitAll()
-                        .requestMatchers("/user").hasRole("USER, ADMIN")
+                        .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/create").hasRole("ADMIN")
                         .requestMatchers("/user/*/edit").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/user/*").hasRole("ADMIN")

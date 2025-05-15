@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Delete User</title>
 </head>
 <body>
+
+<h2>Confirm Delete</h2>
+
+<form th:action="@{/user/{id}/delete(id=${user.id})}" method="post">
+    <div>
+        <label for="id">ID:</label>
+        <input type="text" th:value="${user.id}" id="id" readonly />
+    </div>
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" th:value="${user.firstName}" id="firstName" readonly />
+    </div>
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" th:value="${user.lastName}" id="lastName" readonly />
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <input type="text" th:value="${user.age}" id="age" readonly />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" th:value="${user.email}" id="email" readonly />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="text" th:value="${user.password}" id="password" readonly />
+    </div>
+    <div>
+        <label>Roles:</label>
+        <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>
+    </div>
+
+    <br/>
+    <button type="submit" style="color: red;">Confirm Delete</button>
+    <a th:href="@{/user}">Cancel</a>
+</form>
 
 </body>
 </html>

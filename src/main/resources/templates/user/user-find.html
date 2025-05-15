@@ -2,18 +2,29 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Show</title>
+  <title>User Details</title>
 </head>
 <body>
-<p th:text="${user.getFirstName()}">VALUE_Name</p>
-<p th:text="${user.getLastName()}">VALUE_Surname</p>
-<p th:text="${user.getEmail()}">VALUE_Email</p>
-<p th:text="${user.getId()}">VALUE_Id</p>
 
-<a th:href="@{/user/{id}/edit(id=${user.getId()})}">Edit</a>
+<h2>User Details</h2>
 
-<form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
+<p><strong>ID:</strong> <span th:text="${user.id}">ID</span></p>
+<p><strong>First Name:</strong> <span th:text="${user.firstName}">First Name</span></p>
+<p><strong>Last Name:</strong> <span th:text="${user.lastName}">Last Name</span></p>
+<p><strong>Age:</strong> <span th:text="${user.age}">Age</span></p>
+<p><strong>Email:</strong> <span th:text="${user.email}">Email</span></p>
+
+<p><strong>Roles:</strong>
+  <span th:each="role : ${user.roles}">
+        <span th:text="${role.name}">ROLE</span>&nbsp;
+    </span>
+</p>
+
+<a th:href="@{/user/{id}/edit(id=${user.id})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/user/{id}(id=${user.id})}">
   <input type="submit" value="Delete"/>
 </form>
+
 </body>
 </html>
